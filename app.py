@@ -67,6 +67,7 @@ def register():
             return redirect(url_for('login'))
         except:
             flash('Registration failed. Email or username already exists.', 'danger')
+            return redirect(url_for('register'))
     return render_template('register.html')
 
 @app.route('/listings')
