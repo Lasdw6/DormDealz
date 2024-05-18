@@ -1,6 +1,6 @@
 import React from "react"
 
-const ListingsList = ({titles}) => {
+const ListingsList = ({listings}) => {
     return <div>
         <h2> Listings </h2> 
         <table>
@@ -11,10 +11,10 @@ const ListingsList = ({titles}) => {
                 </tr>
             </thead> 
             <tbody>
-                {titles.map((titles) => (
-                    <tr key={titles.id}>
-                        <td>{titles.id}</td> 
-                        <td>{titles.title}</td>
+                {listings.map((listings) => (
+                    <tr key={listings.id}>
+                        <td>{listings.id}</td> 
+                        <td>{listings.title}</td>
                     </tr>
 
                 ))}    
