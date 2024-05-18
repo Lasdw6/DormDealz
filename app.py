@@ -31,7 +31,7 @@ class Listing(db.Model):
             "description": self.description,
             "price": self.price,
             "duration": self.duration,
-            "category": self.category,
+            "category": self.category
         }
 
 @app.route('/')
@@ -87,7 +87,7 @@ def listings():
     listings = Listing.query.all()
     json_listings = list(map(lambda x: x.to_json(), listings))
     return jsonify({'listings': json_listings})
-    return render_template('listings.html', listings=listings)
+    #return render_template('listings.html', listings=listings)
 
 @app.route('/create_listing', methods=['GET', 'POST'])
 def create_listing():
