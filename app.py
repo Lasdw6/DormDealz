@@ -26,7 +26,7 @@ class Listing(db.Model):
     def to_json(self):
         return {
             "id": self.id,
-            "userName": self.username,
+            "userName": self.user_id,
             "title": self.title,
             "description": self.description,
             "price": self.price,
@@ -82,12 +82,17 @@ def register():
             return redirect(url_for('register'))
     return render_template('register.html')
 
-@app.route('/listings')
+@app.route('/listings', methods=['GET'])
 def listings():
-    listings = Listing.query.all()
-    json_listings = list(map(lambda x: x.to_json(), listings))
-    return jsonify({'listings': json_listings})
-    #return render_template('listings.html', listings=listings)
+    try:
+        listings = Listing.query.all()
+        json_listings = list(map(lambda x: x.to_json(), listings))
+        return jsonify({"listings": json_listings})
+        #return render_template('listings.html', listings=listings)
+    except Exception as e:
+        app.logger.error(f"Error fetching listings: {e}")
+        return jsonify({'error': 'Internal Server Error'}), 500
+
 
 @app.route('/create_listing', methods=['GET', 'POST'])
 def create_listing():
