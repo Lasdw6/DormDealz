@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <ul>
+        {% for listing in listings %}
+        <li>
+            <a href="{{ url_for('listing_detail', id=listing.id) }}">{{ listing.title }}</a>
+            - {{ listing.category }} - ${{ listing.price }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Student Exchange</h1>
+    <a href="{{ url_for('listings') }}">View Listings</a>
+    {% if 'user_id' in session %}
+        <a href="{{ url_for('create_listing') }}">Create Listing</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+</body>
+</html>
