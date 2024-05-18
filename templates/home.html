@@ -6,9 +6,10 @@
 <body>
     <h1>Welcome to the Student Exchange</h1>
     <a href="{{ url_for('listings') }}">View Listings</a>
-    <a href="{{ url_for('search') }}">Search</a>
+    <a href="{{ url_for('search_go') }}">Search</a>
     {% if 'user_id' in session %}
         <a href="{{ url_for('create_listing') }}">Create Listing</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     {% else %}
         <a href="{{ url_for('login') }}">Login</a>

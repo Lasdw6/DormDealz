@@ -9,5 +9,11 @@
     <p>Price: ${{ listing.price }}</p>
     <p>Duration: {{ listing.duration }}</p>
     <p>Category: {{ listing.category }}</p>
+    
+    {% if session.get('user_id') %}
+    <form action="{{ url_for('send_message', listing_id=listing.id) }}" method="POST">
+        <button type="submit">Interested</button>
+    </form>
+    {% endif %}
 </body>
 </html>
