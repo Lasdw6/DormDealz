@@ -8,6 +8,7 @@ const ListingsList = ({listings}) => {
                 <tr>
                     <th>Id</th>
                     <th>Title</th>
+                    <th>Desc</th>
                 </tr>
             </thead> 
             <tbody>
@@ -15,6 +16,7 @@ const ListingsList = ({listings}) => {
                     <tr key={listings.id}>
                         <td>{listings.id}</td> 
                         <td>{listings.title}</td>
+                        <td>{listings.description}</td>
                     </tr>
 
                 ))}    

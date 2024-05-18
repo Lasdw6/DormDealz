@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import ListingsList from './ListingsList'
+import LoginForm from './Login'
 function App() {
   const [listings, setListings] = useState([])
 
@@ -16,7 +17,12 @@ function App() {
     setListings(data.listings)
     console.log(data.listings)
   }
-  return <ListingsList listings={listings} />
+  return (
+  <>
+    <ListingsList listings={listings} />
+    <LoginForm />
+  </>
+  );
 }
 
 export default App
