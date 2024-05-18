@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
@@ -22,6 +22,17 @@ class Listing(db.Model):
     price = db.Column(db.Float, nullable=True)
     duration = db.Column(db.String(50), nullable=False)
     category = db.Column(db.String(50), nullable=False)
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "userName": self.username,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "duration": self.duration,
+            "category": self.category,
+        }
 
 @app.route('/')
 def home():
@@ -74,6 +85,8 @@ def register():
 @app.route('/listings')
 def listings():
     listings = Listing.query.all()
+    json_listings = list(map(lambda x: x.to_json(), listings))
+    return jsonify({'listings': json_listings})
     return render_template('listings.html', listings=listings)
 
 @app.route('/create_listing', methods=['GET', 'POST'])
@@ -106,4 +119,6 @@ def search():
     return render_template('search_results.html', listings=results, query=query)
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
