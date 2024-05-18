@@ -10,8 +10,9 @@ function App() {
   }, [])
 
   const fetchListings = async () => {
-    const response = await fetch("https://http://127.0.0.1:5000/listings")
+    const response = await fetch("http://127.0.0.1:5000/listings")
     const data = await response.json()
+    console.log(data.listings)
     setListings(data.listings)
     console.log(data.listings)
   }
