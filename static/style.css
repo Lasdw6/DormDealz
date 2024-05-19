@@ -1,0 +1,75 @@
+body{
+    background-color: #98d18e;
+}
+
+  p {
+    color: #000000;
+    font-size: 5em;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* .container{
+    max-height: max-content;
+    width:max-content;
+    background-image: url(/static/background_food.png);
+    opacity: 0.5;
+  } */
+
+  p.desc{
+    color: #6d6d6d;
+    font-size: 1.2em;
+    text-align: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+  }
+
+/* #full_form{
+    margin-top: 10%;
+    margin-left: 50px;
+    border-radius: 10px;
+    border: #ffffff;
+    border-width: 10px;
+    background-color: #fbcb75;
+    padding: 10px;
+} */
+
+  .form_recipes{
+    transition: transform 0.3s ease; 
+  }
+  .form_recipes:hover{
+    transform: translateY(-5px);
+  }
+  .btn btn-dark{
+    color: #000000;
+    border-radius: 2px;
+    transition: transform 0.3s ease; 
+  }
+  .btn btn-dark:hover{
+    color: #ffffff;
+    border-radius: 2px;
+    transform: translateY(-1px);
+  }
+
+  .form-control{
+    margin-top: 2em;
+  }
+
+  .input_button {
+    margin-top: 2%;
+  }
+
+  .row{
+    margin: 20px;
+  }
+
+  #fridge{
+    height: 40em;
+    width: 40em;
+  }
+
+.navbar{
+  background-color: rgb(115, 190, 94);
+}

@@ -3,17 +3,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<!--
-<h1>Listings</h1>
-<ul>
-    {% for listing in listings %}
-    <li>
-        <a href="{{ url_for('listing_detail', id=listing.id) }}">{{ listing.title }}</a>
-        - {{ listing.category }} - ${{ listing.price }}
-    </li>
-    {% endfor %}
-</ul> -->
-
 <style>
   /* Add a style block for custom styles */
   body {
@@ -37,48 +26,85 @@
   .container-fluid {
       z-index: 1; /* Bring navbar to the front */
   }
+
+  .styled-div {
+      background-color: #303030;
+      border: 1px solid #ffe81b;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      color: #fff; /* Changed to white for better contrast */
+      font-size: 18px;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      height: 100%; /* Ensure it takes full height of the card */
+  }
+
+  .styled-div:hover {
+      background-color: #3f3f3f;
+      transform: scale(1.05);
+  }
+
+  a {
+      color: inherit; /* Inherits color from the parent element */
+      text-decoration: none; /* Removes the underline */
+  }
+
+  a:hover {
+      color: inherit; /* Keeps the color the same on hover */
+      text-decoration: none; /* Keeps the underline removed on hover */
+  }
+
+  .card-img-top {
+      height: 120px;
+      width: 150px;
+      margin: auto;
+      margin-top: 10px;
+      object-fit: fill;
+      transition: all 0.3s ease;
+  }
+
+  .card-img-top:hover {
+      height: 130px;
+      width: 160px;
+  }
+
+  .card {
+      background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .card-body {
+      padding-bottom: -20px;
+  }
 </style>
 
-<nav id="navbars" class="navbar sticky-top">
-  <div class="container-fluid" style="margin-bottom: 10px;">
-      <a class="navbar-brand" href="#">
-          <img src="static/logo.png" alt="Logo0" height="250" class="d-inline-block align-text-top">
-      </a>
-  </div>
-</nav>
+
 
 <div id="background-container"></div> <!-- Container for background image -->
 
-<script>
-  
-  function bigImg(x) {
+<h2 style="text-align: center; margin-top: 1em;">
+  <a href="/" style="text-decoration: none; color: #ffe81b;">Items for you:</a>
+</h2>
 
-  x.style.height = "130px";
-  x.style.width = "160px";
-}
-
-function normalImg(x) {
-  x.style.height = "120px"; 
-  x.style.width = "150px";
-}
-
-</script>
-<h2 style="text-align: center; margin-top: 1em;"> <a href="/" style="text-decoration: none; color:rgb(0, 0, 0);"> items for you: </a></h2>
 <div class="container">
     <div class="row">
         {% for item in listings %}
-        <div class="col-6 col-md-4 col-lg-4 mb-3" id="div">
-            <div class="card border-dark" style="background-color: rgba(255, 255, 255, 0.3);">
-                    <img src="{{ item['image'] }}" class="card-img-top" alt="item Image" style="height: 120px; width: 150px; margin: auto; margin-top: 10px; object-fit: fill;" name="A" onmouseover="bigImg(this)" onmouseout="normalImg(this)">
-                    <div class="card-body">
-                        <h5 style="text-align: center; color: inherit; text-decoration: none;"> <a href="{{ url_for('listing_detail', id=item['id'] )}}">{{ item['title'] }}</a>  
-                           <br> {{ item['category'] }} - {{ item['price'] }}
-                        </h5>
-                    </div>
-                </div>                
-            </a>
+        <div class="col-lg-4 col-md-6 mb-4"> <!-- Adjust column size based on screen size -->
+            <div class="styled-div">
+                <div class="card border-dark">
+                    <a href="{{ url_for('listing_detail', id=item['id']) }}">
+                        <img src="{{ item['image'] }}" class="card-img-top" alt="Item Image">
+                        <div class="card-body">
+                            <h3>{{ item['title'] }}</h3>
+                            <p>{{ item['category'] }} - ${{ item['price'] }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
