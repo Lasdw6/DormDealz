@@ -185,7 +185,7 @@ def update_profile():
     if 'user_id' not in session:
         flash('You need to be logged in to view your profile.', 'warning')
         return redirect(url_for('login'))
-
+    
     user_id = session['user_id']
     user = User.query.get_or_404(user_id)
 
@@ -201,6 +201,15 @@ def update_profile():
         db.session.commit()
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('profile'))
+    
+@app.route('/mylistings', methods=['GET'])
+def mylistings():
+    if 'user_id' not in session:
+        flash('You need to be logged in to view your listings.', 'warning')
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    listings = Listing.query.filter_by(user_id = user_id).all()
+    return render_template('mylistings.html', listings = listings)
 
 @app.route('/search_go')
 def search_go():
