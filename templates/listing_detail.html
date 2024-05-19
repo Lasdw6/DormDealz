@@ -10,7 +10,7 @@
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 20px;
-      margin: 20px;
+      margin: 20px auto; /* Updated */
       color: #333;
       font-size: 18px;
       font-family: 'Arial', sans-serif;
@@ -28,28 +28,33 @@
     /* Flexbox Example */
     .flex-container {
       display: flex;
-      justify-content: space-around;
+      flex-direction: column; /* Updated */
+      justify-content: center;
       align-items: center;
       height: 100vh;
     }
+
+    .button-container {
+      margin-top: 20px; /* Adjust margin as needed */
+    }
   </style>
 
-<div class="styled-div">
+<div class="flex-container">
+  <div class="styled-div">
+      <h1>{{ listing.title }}</h1>
+      <p>{{ listing.description }}</p>
+      <p>Price: ${{ listing.price }}</p>
+      <p>Duration: {{ listing.duration }}</p>
+      <p>Category: {{ listing.category }}</p> 
+  </div>
 
-
-    
-<h1>{{ listing.title }}</h1>
-<p>{{ listing.description }}</p>
-<p>Price: ${{ listing.price }}</p>
-<p>Duration: {{ listing.duration }}</p>
-<p>Category: {{ listing.category }}</p> 
-
+  <div class="button-container">
+    {% if session.get('user_id') %}
+    <form action="{{ url_for('send_message', listing_id=listing.id) }}" method="POST">
+        <button type="submit">Interested</button>
+    </form>
+    {% endif %}
+  </div>
 </div>
-
-{% if session.get('user_id') %}
-<form action="{{ url_for('send_message', listing_id=listing.id) }}" method="POST">
-    <button type="submit">Interested</button>
-</form>
-{% endif %}
 
 {% endblock %}

@@ -1,19 +1,145 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}My Listings{% endblock %}
 
 {% block content %}
+<style>
+  body {
+      margin: 0;
+      padding: 0;
+  }
 
-<h1>My Listings</h1>
-<ul>
-    {% for listing in listings %}
-    <li>
-        <a href="{{ url_for('listing_detail', id=listing.id) }}">{{ listing.title }}</a>
-        - {{ listing.category }} - ${{ listing.price }}
-        <a href="{{ url_for('edit_listing', id=listing.id) }}">Edit</a>
-    </li>
-    {% endfor %}
-</ul>
-<a href="{{ url_for('create_listing') }}">Create New Listing</a>
+  #background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/static/background_food.png');
+      background-size: auto;
+      background-repeat: repeat;
+      opacity: 0.2;
+      z-index: -1;
+  }
+
+  .container-fluid {
+      z-index: 1;
+  }
+
+  .styled-div {
+      background-color: #303030;
+      border: 1px solid #ffe81b;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      color: #fff;
+      font-size: 18px;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+  }
+
+  .styled-div:hover {
+      background-color: #3f3f3f;
+      transform: scale(1.05);
+  }
+
+  a {
+      color: inherit;
+      text-decoration: none;
+  }
+
+  a:hover {
+      color: inherit;
+      text-decoration: none;
+  }
+
+  .card-img-top {
+      height: 120px;
+      width: 150px;
+      margin: auto;
+      margin-top: 10px;
+      object-fit: fill;
+      transition: all 0.3s ease;
+  }
+
+  .card-img-top:hover {
+      height: 130px;
+      width: 160px;
+  }
+
+  .card {
+      background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .card-body {
+      padding-bottom: -20px;
+  }
+
+  .edit-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 1rem;
+      color: #000000;
+      background-color: #ffe81b;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+  }
+
+  .edit-button:hover {
+      background-color: #e0c817;
+  }
+
+  .create-button {
+      margin: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #000000;
+      background-color: #ffe81b;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+  }
+
+  .create-button:hover {
+      background-color: #e0c817;
+      color: #ffffff; /* Change text color to white on hover */
+  }
+</style>
+
+<div id="background-container"></div>
+
+<h2 style="text-align: center; margin-top: 1em;">
+  <a href="/mylistings" style="text-decoration: none; color: #ffe81b;">My Listings:</a>
+</h2>
+
+<div class="container">
+    <div class="row">
+        {% for listing in listings %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="styled-div">
+                <div class="card border-dark">
+                    <a href="{{ url_for('listing_detail', id=listing.id) }}">
+                        <img src="{{ listing.image }}" class="card-img-top" alt="Item Image">
+                        <div class="card-body">
+                            <h3>{{ listing.title }}</h3>
+                            <p>{{ listing.category }} - ${{ listing.price }}</p>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('edit_listing', id=listing.id) }}" class="edit-button">Edit</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('create_listing') }}" class="create-button">Create New Listing</a>
+</div>
 
 {% endblock %}
