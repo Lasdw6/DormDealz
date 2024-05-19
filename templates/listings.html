@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Listings</title>
-</head>
-<body>
-    <h1>Listings</h1>
-    <ul>
-        {% for listing in listings %}
-        <li>
-            <a href="{{ url_for('listing_detail', id=listing.id) }}">{{ listing.title }}</a>
-            - {{ listing.category }} - ${{ listing.price }}
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>Listings</h1>
+<ul>
+    {% for listing in listings %}
+    <li>
+        <a href="{{ url_for('listing_detail', id=listing.id) }}">{{ listing.title }}</a>
+        - {{ listing.category }} - ${{ listing.price }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

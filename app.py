@@ -211,6 +211,26 @@ def mylistings():
     listings = Listing.query.filter_by(user_id = user_id).all()
     return render_template('mylistings.html', listings=listings)
 
+@app.route('/edit_listing/<int:id>', methods=['GET', 'POST'])
+def edit_listing(id):
+    listing = Listing.query.get_or_404(id)
+
+    if listing.user_id != session['user_id']:
+        flash('You are not authorized to edit this listing.', 'danger')
+        return redirect(url_for('listings'))
+
+    if request.method == 'POST':
+        listing.title = request.form['title']
+        listing.description = request.form['description']
+        listing.price = request.form['price']
+        listing.duration = request.form['duration']
+        listing.category = request.form['category']
+        db.session.commit()
+        flash('Listing updated successfully!', 'success')
+        return redirect(url_for('listing_detail', id=listing.id))
+
+    return render_template('edit_listing.html', listing=listing)
+
 @app.route('/wishlist', methods=['GET'])
 def wishlist():
     listings=[]

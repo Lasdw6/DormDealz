@@ -1,0 +1,61 @@
+/* CSS for inbox page */
+.container {
+    padding: 20px;
+}
+
+.inbox-messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message-item {
+    border: 1px solid #ccc;
+    margin-bottom: 20px; /* Increased to match the margin from the new rule */
+    padding: 10px;
+    border-radius: 10px; /* Added rounded corners */
+    background-color: #f9f9f9; /* Light background for better readability */
+}
+
+.message-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.listing-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.listing-link:hover {
+    text-decoration: underline;
+}
+
+/* Add spacing between bullets */
+.message-item:not(:last-child) {
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+/* Button styles */
+.button {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove default border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Centered text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Inline block */
+    font-size: 14px; /* Font size */
+    margin: 10px 2px; /* Margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Additional styles for the buttons to fit within the message item if needed */
+.message-button {
+    margin-top: 10px; /* Space above button */
+}
