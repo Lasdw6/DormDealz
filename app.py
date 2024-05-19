@@ -209,15 +209,15 @@ def mylistings():
         return redirect(url_for('login'))
     user_id = session['user_id']
     listings = Listing.query.filter_by(user_id = user_id).all()
-    return render_template('mylistings.html', listings = listings)
+    return render_template('mylistings.html', listings=listings)
 
 @app.route('/wishlist', methods=['GET'])
 def wishlist():
+    listings=[]
     user_id = session['user_id']
     user = User.query.get_or_404(user_id)
     messages = Message.query.filter_by(sender_id= user_id).all()
     for message in messages:
-        listings=[]
         listing_id= message.listing_id
         listing= Listing.query.get(listing_id)
         if listing:
