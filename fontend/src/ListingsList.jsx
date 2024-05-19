@@ -1,7 +1,7 @@
 import React from "react"
-
+import Card from "./Card"
 const ListingsList = ({listings}) => {
-    return <div>
+    /* return <div>
         <h2> Listings </h2> 
         <table>
             <thead>
@@ -22,7 +22,13 @@ const ListingsList = ({listings}) => {
                 ))}    
             </tbody>   
         </table>           
-    </div>
+    </div> 
+   /* return (
+    <div> 
+        {listings.map((listings) => ( 
+            <Card id={listings.id} title={listings.title} description={listings.description} /> 
+        ))} 
+    </div>) */
 }
 
 export default ListingsList
