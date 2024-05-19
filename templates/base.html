@@ -1,32 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebApp</title>
+    <title>{% block title %}DormDealz{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f0c419;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #1e1e1e;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        nav a {
+            color: #f0c419;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: #f0c419;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #f0c419;
+            background-color: #1e1e1e;
+            color: #f0c419;
+        }
+        button {
+            background-color: #f0c419;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e1b314;
+        }
+        .flash {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flashes">
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
     <nav>
-        <a href="{{ url_for('main.index') }}">Home</a>
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
-            <a href="{{ url_for('listings.create_listing') }}">Create Listing</a>
-            <a href="{{ url_for('listings.view_listings') }}">View Listings</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('listings') }}">Listings</a>
+        {% if 'user_id' in session %}
+            <a href="{{ url_for('mylistings') }}">My Listings</a>
+            <a href="{{ url_for('create_listing') }}">Create Listing</a>
+            <a href="{{ url_for('profile_home') }}">Profile Home</a>
+            <a href="{{ url_for('inbox') }}">Inbox</a>
+            <a href="{{ url_for('wishlist') }}">Wishlist</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('auth.login') }}">Login</a>
-            <a href="{{ url_for('auth.register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
         {% endif %}
     </nav>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

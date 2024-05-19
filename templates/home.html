@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <h1>Welcome to the Student Exchange</h1>
-    <a href="{{ url_for('listings') }}">View Listings</a>
-    <a href="{{ url_for('search_go') }}">Search</a>
+    <button class="button" onclick="window.location.href='{{ url_for('listings') }}'">View Listings</button>
+    <button class="button" onclick="window.location.href='{{ url_for('search_go') }}'">Search</button>
     {% if 'user_id' in session %}
-        <a href="{{ url_for('create_listing') }}">Create Listing</a>
-        <a href="{{ url_for('profile') }}">Profile</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
+        <button class="button" onclick="window.location.href='{{ url_for('create_listing') }}'">Create Listing</button>
+        <button class="button" onclick="window.location.href='{{ url_for('profile_home') }}'">Profile Home</button>
+        <button class="button" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
     {% else %}
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+        <button class="button" onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+        <button class="button" onclick="window.location.href='{{ url_for('register') }}'">Register</button>
     {% endif %}
-</body>
-</html>
+{% endblock %}

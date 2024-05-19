@@ -15,6 +15,8 @@ class User(db.Model):
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
+    phone = db.Column(db.Integer, nullable=True)
+    insta = db.Column(db.String(150), nullable=True)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -101,8 +103,8 @@ def listings():
     try:
         listings = Listing.query.all()
         json_listings = list(map(lambda x: x.to_json(), listings))
-        return jsonify({"listings": json_listings})
-        #return render_template('listings.html', listings=listings)
+        #return jsonify({"listings": json_listings})
+        return render_template('listings.html', listings=listings)
     except Exception as e:
         app.logger.error(f"Error fetching listings: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
@@ -153,7 +155,21 @@ def send_message(listing_id):
     flash('Your interest has been expressed to the listing owner.', 'success')
     return redirect(url_for('listing_detail', id=listing_id))
 
-@app.route('/profile')
+@app.route('/inbox')
+def inbox():
+    user_id = session['user_id']
+    user = User.query.get_or_404(user_id)
+    messages = Message.query.filter_by(receiver_id=user_id).all()
+    return render_template('inbox.html', user=user, messages=messages)
+
+@app.route('/profile_home')
+def profile_home():
+    if 'user_id' not in session:
+        flash('You need to be logged in to view your profile.', 'warning')
+        return redirect(url_for('login'))
+    return render_template('profile_home.html')
+
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user_id' not in session:
         flash('You need to be logged in to view your profile.', 'warning')
@@ -161,8 +177,72 @@ def profile():
 
     user_id = session['user_id']
     user = User.query.get_or_404(user_id)
-    messages = Message.query.filter_by(receiver_id=user_id).all()
-    return render_template('profile.html', user=user, messages=messages)
+
+    return render_template('profile.html', user=user)
+
+@app.route('/update_profile', methods=['GET', 'POST'])
+def update_profile():
+    if 'user_id' not in session:
+        flash('You need to be logged in to view your profile.', 'warning')
+        return redirect(url_for('login'))
+    
+    user_id = session['user_id']
+    user = User.query.get_or_404(user_id)
+
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        phone = request.form['phone']
+        insta = request.form['insta']
+        user.username= username
+        user.email= email
+        user.phone = phone
+        user.insta = insta
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('profile'))
+    
+@app.route('/mylistings', methods=['GET'])
+def mylistings():
+    if 'user_id' not in session:
+        flash('You need to be logged in to view your listings.', 'warning')
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    listings = Listing.query.filter_by(user_id = user_id).all()
+    return render_template('mylistings.html', listings=listings)
+
+@app.route('/edit_listing/<int:id>', methods=['GET', 'POST'])
+def edit_listing(id):
+    listing = Listing.query.get_or_404(id)
+
+    if listing.user_id != session['user_id']:
+        flash('You are not authorized to edit this listing.', 'danger')
+        return redirect(url_for('listings'))
+
+    if request.method == 'POST':
+        listing.title = request.form['title']
+        listing.description = request.form['description']
+        listing.price = request.form['price']
+        listing.duration = request.form['duration']
+        listing.category = request.form['category']
+        db.session.commit()
+        flash('Listing updated successfully!', 'success')
+        return redirect(url_for('listing_detail', id=listing.id))
+
+    return render_template('edit_listing.html', listing=listing)
+
+@app.route('/wishlist', methods=['GET'])
+def wishlist():
+    listings=[]
+    user_id = session['user_id']
+    user = User.query.get_or_404(user_id)
+    messages = Message.query.filter_by(sender_id= user_id).all()
+    for message in messages:
+        listing_id= message.listing_id
+        listing= Listing.query.get(listing_id)
+        if listing:
+            listings.append(listing)
+    return render_template('wishlist.html', user=user, listings=listings)
 
 @app.route('/search_go')
 def search_go():
