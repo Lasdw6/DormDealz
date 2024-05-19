@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+<!--
 <h1>Listings</h1>
 <ul>
     {% for listing in listings %}
@@ -12,6 +12,73 @@
         - {{ listing.category }} - ${{ listing.price }}
     </li>
     {% endfor %}
-</ul>
+</ul> -->
 
-{% endblock %}
+<style>
+  /* Add a style block for custom styles */
+  body {
+      margin: 0; /* Remove default body margin */
+      padding: 0; /* Remove default body padding */
+  }
+
+  #background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/static/background_food.png');
+      background-size: auto;
+      background-repeat: repeat;
+      opacity: 0.2; /* Adjust the opacity value as needed */
+      z-index: -1; /* Send it to the back */
+  }
+
+  .container-fluid {
+      z-index: 1; /* Bring navbar to the front */
+  }
+</style>
+
+<nav id="navbars" class="navbar sticky-top">
+  <div class="container-fluid" style="margin-bottom: 10px;">
+      <a class="navbar-brand" href="#">
+          <img src="static/logo.png" alt="Logo0" height="250" class="d-inline-block align-text-top">
+      </a>
+  </div>
+</nav>
+
+<div id="background-container"></div> <!-- Container for background image -->
+
+<script>
+  
+  function bigImg(x) {
+
+  x.style.height = "130px";
+  x.style.width = "160px";
+}
+
+function normalImg(x) {
+  x.style.height = "120px"; 
+  x.style.width = "150px";
+}
+
+</script>
+<h2 style="text-align: center; margin-top: 1em;"> <a href="/" style="text-decoration: none; color:rgb(0, 0, 0);"> items for you: </a></h2>
+<div class="container">
+    <div class="row">
+        {% for item in listings %}
+        <div class="col-6 col-md-4 col-lg-4 mb-3" id="div">
+            <div class="card border-dark" style="background-color: rgba(255, 255, 255, 0.3);">
+                    <img src="{{ item['image'] }}" class="card-img-top" alt="item Image" style="height: 120px; width: 150px; margin: auto; margin-top: 10px; object-fit: fill;" name="A" onmouseover="bigImg(this)" onmouseout="normalImg(this)">
+                    <div class="card-body">
+                        <h5 style="text-align: center; color: inherit; text-decoration: none;"> <a href="{{ url_for('listing_detail', id=item['id'] )}}">{{ item['title'] }}</a>  
+                           <br> {{ item['category'] }} - {{ item['price'] }}
+                        </h5>
+                    </div>
+                </div>                
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
