@@ -16,6 +16,18 @@ class User(db.Model):
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    listing_id = db.Column(db.Integer, db.ForeignKey('listing.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    receiver = db.relationship('User', foreign_keys=[receiver_id])
+    listing = db.relationship('Listing')
+
 class Listing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -34,7 +46,7 @@ class Listing(db.Model):
             "price": self.price,
             "duration": self.duration,
             "category": self.category
-        }
+            }
 
 @app.route('/')
 def home():
@@ -119,9 +131,42 @@ def listing_detail(id):
     listing = Listing.query.get_or_404(id)
     return render_template('listing_detail.html', listing=listing)
 
-@app.route('/search', methods=['GET'])
-def search_page():
-    return render_template('search.html')
+@app.route('/send_message/<int:listing_id>', methods=['POST'])
+def send_message(listing_id):
+    if 'user_id' not in session:
+        flash('You need to be logged in to express interest.', 'warning')
+        return redirect(url_for('login'))
+
+    sender_id = session['user_id']
+    listing = Listing.query.get_or_404(listing_id)
+    receiver_id = listing.user_id
+
+    new_message = Message(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        listing_id=listing_id,
+        content="I'm interested in your listing."
+    )
+
+    db.session.add(new_message)
+    db.session.commit()
+    flash('Your interest has been expressed to the listing owner.', 'success')
+    return redirect(url_for('listing_detail', id=listing_id))
+
+@app.route('/profile')
+def profile():
+    if 'user_id' not in session:
+        flash('You need to be logged in to view your profile.', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    user = User.query.get_or_404(user_id)
+    messages = Message.query.filter_by(receiver_id=user_id).all()
+    return render_template('profile.html', user=user, messages=messages)
+
+@app.route('/search_go')
+def search_go():
+        return render_template('search.html')
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -130,9 +175,8 @@ def search():
         results = Listing.query.filter(Listing.title.contains(query) | Listing.description.contains(query)).all()
         return render_template('search_results.html', listings=results, query=query)
     else:
-        flash('Please provide a search query.', 'warning')
-        return redirect(url_for('search_page'))
-
+        return redirect(url_for('search_go'))
+    
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
