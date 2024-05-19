@@ -202,6 +202,19 @@ def update_profile():
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('profile'))
 
+@app.route('/wishlist', methods=['GET'])
+def wishlist():
+    user_id = session['user_id']
+    user = User.query.get_or_404(user_id)
+    messages = Message.query.filter_by(sender_id= user_id).all()
+    for message in messages:
+        listings=[]
+        listing_id= message.listing_id
+        listing= Listing.query.get(listing_id)
+        if listing:
+            listings.append(listing)
+    return render_template('wishlist.html', user=user, listings=listings)
+
 @app.route('/search_go')
 def search_go():
         return render_template('search.html')
