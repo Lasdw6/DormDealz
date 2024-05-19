@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({listings}){
+const Card = ({listings}) => {
     return(
         <div>
             {listings.map((listings) => (

@@ -1,5 +1,4 @@
 import React from "react"
-import Card from "./Card"
 const ListingsList = ({listings}) => {
     /* return <div>
         <h2> Listings </h2> 
